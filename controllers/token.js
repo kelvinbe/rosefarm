@@ -7,8 +7,8 @@ dotenv.config();
 let token
 
 export const createToken=async (req, res, next)=>{
-        const secret = 'K8Rt73sltOqEwipA';
-        const consumerkey = 'pXHE2VYPYdrAWGUpk4OFqCxsHBIyWVGr';
+        const secret = 'AZLIA3XRc86BTwAo';
+        const consumerkey = '5wIXjjtMJ9mGA1v6P6iBo5YNnor2XmyY';
         const auth = new Buffer.from(`${consumerkey}:${secret}`).toString("base64");
         console.log("secret", secret);
         await axios.get(
@@ -30,7 +30,10 @@ export const createToken=async (req, res, next)=>{
 
 export const stkPush = async (req, res) => {
       const phone = req.body.phone.substring(1);
+      console.log('phone', phone)
       const amount = req.body.amount;
+      console.log('amount', amount)
+
       const date = new Date();
       const timestamp =
         date.getFullYear() +
@@ -47,7 +50,7 @@ export const stkPush = async (req, res) => {
 
       const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
-      const data = {
+      const dataa = {
         BusinessShortCode: shortcode,
         Password: password,
         Timestamp: timestamp,
@@ -61,7 +64,8 @@ export const stkPush = async (req, res) => {
         TransactionDesc: "Test",
       }
     
-      await axios.post(url, data,
+      await axios.post(url, dataa,
+      
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,9 +73,11 @@ export const stkPush = async (req, res) => {
         }
       ).then((data) =>{
         console.log(data)
+        console.log('we got here')
+        console.log('tokennn', token)
         res.status(200).json(data.data)
       }).catch (error => {
-        console.log('errr', error.message)
+        console.log('errr', error)
         res.status(400).json(error.message)
       }) 
 
